@@ -10,3 +10,7 @@ variable "aws_region" {
   type    = "string"
   default = "eu-west-1"
 }
+
+variable "cluster_size" {
+  default = "3"
+}

@@ -3,6 +3,16 @@ resource "aws_vpc" "default" {
   cidr_block = "10.0.0.0/16"
 }
 
+resource "aws_subnet" "consul" {
+  vpc_id                  = "${aws_vpc.default.id}"
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = "true"
+
+  tags {
+    Name = "consul"
+  }
+}
+
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
@@ -57,4 +67,9 @@ resource "aws_security_group" "default" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_iam_instance_profile" "consul-autodetect" {
+  name  = "autodetect"
+  role = "consul-autodetect"
 }
